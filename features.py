@@ -76,13 +76,13 @@ def add_water_distance(df: pd.DataFrame, waterfront_locations: pd.DataFrame) -> 
 def add_features(df: pd.DataFrame, waterfront_locations: pd.DataFrame | None = None) -> pd.DataFrame:
     """Add all new features.
 
-    For new houses, pass the `waterfront_locations` of the training data.
-    If you pass nothing, they are taken from `df` itself.
+    - `sqft_price` is added only if the data has a `price` column.
+      A NEW house has no price yet, so it gets the other two features only.
+    - For new houses, pass the `waterfront_locations` of the training data.
+      If you pass nothing, they are taken from `df` itself.
     """
     if waterfront_locations is None:
         waterfront_locations = get_waterfront_locations(df)
-    return (
-        df.pipe(add_sqft_price)
-        .pipe(add_center_distance)
-        .pipe(add_water_distance, waterfront_locations)
-    )
+    if "price" in df.columns:
+        df = add_sqft_price(df)
+    return df.pipe(add_center_distance).pipe(add_water_distance, waterfront_locations)

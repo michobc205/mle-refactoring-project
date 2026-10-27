@@ -76,3 +76,13 @@ def test_water_distance_matches_the_notebook(featured):
     assert round(featured["water_distance"].mean(), 3) == 5.544
     assert round(featured["water_distance"].max(), 4) == 57.4277
     assert (featured.loc[featured["waterfront"] == 1, "water_distance"] == 0).all()
+
+
+def test_new_house_without_price_gets_center_and_water_distance_only(featured):
+    # A new house: no price. The reference points come from the training data.
+    locations = get_waterfront_locations(featured)
+    new_house = pd.DataFrame({"lat": [47.6], "long": [-122.3], "waterfront": [0.0]})
+    result = add_features(new_house, locations)
+    assert "sqft_price" not in result.columns
+    assert result["center_distance"].iloc[0] > 0
+    assert result["water_distance"].iloc[0] > 0
