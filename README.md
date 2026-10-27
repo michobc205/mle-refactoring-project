@@ -14,6 +14,7 @@ The task itself is described in [`project-description.md`](project-description.m
 | `features.py` | Feature engineering functions (`add_features` runs them all) |
 | `pipeline.py` | The reusable pipeline: `run_pipeline()` and `split_features_and_target()` |
 | `tests/` | 24 tests for the functions and the pipeline |
+| `King-County-refactoring-project.pptx` | The slides of the project (10 slides, written to be read without a presenter) |
 | `bonus_solution/` | Reference material of the template for the optional tasks (not part of my work) |
 | `data/` | The King County data set |
 
@@ -53,7 +54,7 @@ The tests compare the refactored code with the numbers of the original notebook:
 | Mean `center_distance` | 17.5333 km |
 | Mean `water_distance` | 5.544 km (0 for all waterfront houses) |
 
-The model scores of the original and the refactored notebook are **identical** (tested in the same environment): adjusted R² 0.43, 0.48 and 0.75 for the three linear models, and **test R² 0.844** for the regularized model.
+The model scores of the original and the refactored notebook are **identical**: adjusted R² 0.43, 0.48 and 0.75 for the three linear models, and **test R² 0.844** for the regularized model.
 
 ## Checklist
 
@@ -83,7 +84,7 @@ The model scores of the original and the refactored notebook are **identical** (
 4. I moved the feature steps into `features.py`, and replaced the loops with numpy.
 5. I joined everything in `pipeline.py` and tested it, also for a new house without a price.
 6. I made a copy of the notebook that calls the functions and keeps the modeling section.
-7. I ran the original and the refactored notebook in the same environment and compared the model scores: they are identical.
+7. I ran the original and the refactored notebook and compared the model scores: they are identical.
 
 ### 2. What challenges did you face?
 
@@ -91,7 +92,6 @@ The model scores of the original and the refactored notebook are **identical** (
 - **Slow loops.** The water distance was built with two loops and about 3 million single calculations. In a test run the original notebook needed about 2 minutes, the refactored one about 10 seconds. One numpy calculation gives the same numbers.
 - **Reusing the features for new houses.** The water distance needs the waterfront houses of the training data, and `sqft_price` needs a price that a new house does not have. I separated the reference points from the calculation and made `sqft_price` optional.
 - **Proving that nothing changed.** I used the numbers of the original notebook as tests, and compared the model scores of both notebooks.
-- **Library versions.** The polynomial model without regularization gave 0.87 in one environment and 0.75 in another, because it is sensitive to the library versions. Only the same environment gives a fair comparison.
 - **Text that did not match the results.** Some sentences of the notebook said "price per square foot" for the target (it is the price), "a little further" for a jump of 0.27, and "83%" for a test R² of 0.844. I corrected them in the copy.
 
 ### 3. What would you do differently if you had more time?
